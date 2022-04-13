@@ -1,0 +1,14 @@
+programming language
+
+FRONTEND
+HTML - MARKUP language
+CSS - MARKUP language
+BOOTSTRAP - CSS FRAMEWORK
+JAVASCRIPT - programming language
+
+BACKEND
+PHP - programming language CRUD - CREATE RETRIEVE UPDATE DELETE
+MYSQL - DATABASE (PHPMYADMIN)
+
+
+sms_database - name database
