@@ -25,8 +25,9 @@
       <div> <a href="#" class="nav_logo"> <i class='bx bx-plus-medical'></i> <span class="nav_logo-name">Patient Reminder</span> </a>
         <div class="nav_list">
           <a href="index.php" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
+          <a href="addpatient.php" class="nav_link"> <i class='bx bx-add-to-queue nav_icon'></i> <span class="nav_name">Add Patient</span> </a>
           <a href="schedules.php" class="nav_link active"> <i class='bx bx-time-five'></i> <span class="nav_name">Schedule Check-up</span> </a>
-          <a href="patients.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
+          <a href="studentlist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
           <a href="postponed.php" class="nav_link"> <i class='bx bx-message-square-x'></i> <span class="nav_name">Postponed Dates</span> </a>
           <!-- <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a>
           <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a>
@@ -38,6 +39,7 @@
   <!--Container Main start-->
   <div class="height-100">
     <div class="content-title">
+      <br>
       <h1>Schedules</h1>
       <h5>Schedule history of patients</h5>
       <div class="table-container  mt-4 bg-body p-4">
@@ -56,9 +58,9 @@
                   <th scope="col">First</th>
                   <th scope="col">Middle</th>
                   <th scope="col">Last</th>
-                  <th scope="col">Contact No.</th>
-                  <th scope="col">Date Schedule</th>
-                  <th scope="col">Time</th>
+                  <th scope="col">Sex</th>
+                  <th scope="col">Check-up Date</th>
+                  <th scope="col">Diagnose</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
@@ -70,9 +72,9 @@
                     <td><?php echo $row['firstName'] ?></td>
                     <td><?php echo $row['middleName'] ?></td>
                     <td><?php echo $row['lastName'] ?></td>
-                    <td><?php echo $row['contact_no'] ?></td>
+                    <td><?php echo $row['sex'] ?></td>
                     <td><?php echo $row['date'] ?></td>
-                    <td><?php echo $row['time'] ?></td>
+                    <td><?php echo $row['description'] ?></td>
                     <?php if ($row['status'] == "PENDING") { ?>
                       <td><span class="badge bg-warning"><?php echo $row['status'] ?></span></h3>
                       </td>

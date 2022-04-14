@@ -39,7 +39,7 @@ if (isset($_POST['addpatient'])) {
 
  $description = $_POST['description'];
  $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date','$time','$description','PENDING', '0', '0')") or die($conn->error);
- header("Location: index.php");
+ header("Location: addpatient.php");
 }
 
 // edit patient
@@ -57,14 +57,14 @@ if (isset($_POST['updatePatient'])) {
  $section = $_POST['section'];
  $course = $_POST['course'];
  $conn->query("UPDATE patient SET studentId='$studentId', firstName='$firstName', middleName='$middleName', lastName='$lastName', birthday='$birthday', sex='$sex', age='$age', contact_no='$contact_no', email='$email', section='$section', course='$course' WHERE id=$id") or die($conn->error);
- header("Location: patients.php");
+ header("Location: studentlist.php");
 }
 
 // delete
 if (isset($_GET['delete'])) {
  $id = $_GET['delete'];
  $conn->query("DELETE FROM patient WHERE id=$id") or die($conn->error);
- header("Location: patients.php");
+ header("Location: studentlist.php");
 }
 
 // done

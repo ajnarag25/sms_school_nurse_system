@@ -25,8 +25,9 @@
       <div> <a href="#" class="nav_logo"> <i class='bx bx-plus-medical'></i> <span class="nav_logo-name">Patient Reminder</span> </a>
         <div class="nav_list">
           <a href="index.php" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
+          <a href="addpatient.php" class="nav_link"> <i class='bx bx-add-to-queue nav_icon'></i> <span class="nav_name">Add Patient</span> </a>
           <a href="schedules.php" class="nav_link"> <i class='bx bx-time-five'></i> <span class="nav_name">Schedule Check-up</span> </a>
-          <a href="patients.php" class="nav_link active"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
+          <a href="studentlist.php" class="nav_link active"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
           <a href="postponed.php" class="nav_link"> <i class='bx bx-message-square-x'></i> <span class="nav_name">Postponed Dates</span> </a>
           <!-- <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a>
           <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a>
@@ -38,8 +39,26 @@
   <!--Container Main start-->
   <div class="height-100">
     <div class="content-title">
-      <h1>Clinic Patients</h1>
-      <h5>ISU Clinic patients</h5>
+      <br>
+      <h1>Student List (from Registrar)</h1>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Students</h5>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group" >
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <button type="button" class="btn btn-outline-primary"><i class='bx bx-search nav_icon'></i></button>
+          </div>  
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-outline-secondary">Import</button>
+        </div>
+        <div class="col-md-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudent">Add <i class='bx bx-plus nav_icon'></i></button>
+        </div>
+      </div>
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
@@ -99,8 +118,16 @@
                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                             <div class="row mb-3">
                               <div class="col-md-6">
+                                <label for="fname" class="form-label">Student I.D</label>
+                                <input type="text" name="sId" class="form-control" id="sId" value="<?php echo $row['studentId'] ?>" required>
+                              </div>
+                              <div class="col-md-6">
                                 <label for="fname" class="form-label">First Name</label>
                                 <input type="text" name="fname" class="form-control" id="fname" value="<?php echo $row['firstName'] ?>" required>
+                              </div>
+                              <div class="col-md-6">
+                                <label for="fname" class="form-label">Middle Name</label>
+                                <input type="text" name="mname" class="form-control" id="mname" value="<?php echo $row['middleName'] ?>" required>
                               </div>
                               <div class="col-md-6">
                                 <label for="lname" class="form-label">Last Name</label>
@@ -171,12 +198,12 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Modal -->
+                  <!-- Modal Delete-->
                   <div class="modal fade" id="delete<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Delete Patient</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Delete Student</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -185,6 +212,100 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                           <a class="btn btn-danger" href="functions.php?delete=<?php echo $row["id"] ?>">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Modal Add-->
+                  <div class="modal fade" id="addStudent" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="functions.php" method="POST">
+                            <input type="hidden" name="id" value="">
+                            <div class="row mb-3">
+                              <div class="col-md-6">
+                                <label for="fname" class="form-label">Student I.D</label>
+                                <input type="text" name="sId" class="form-control" id="sId" value="" required>
+                              </div>
+                              <div class="col-md-6">
+                                <label for="fname" class="form-label">First Name</label>
+                                <input type="text" name="fname" class="form-control" id="fname" value="" required>
+                              </div>
+                              <div class="col-md-6">
+                                <label for="fname" class="form-label">Middle Name</label>
+                                <input type="text" name="mname" class="form-control" id="mname" value="" required>
+                              </div>
+                              <div class="col-md-6">
+                                <label for="lname" class="form-label">Last Name</label>
+                                <input type="text" name="lname" class="form-control" id="lname" value="" required>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label for="bday" class="form-label">Birthday</label>
+                                  <input type="date" name="bday" class="form-control" onchange="calculate_bdays()" id="bdays" placeholder="..." required>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="" class="form-label">Sex</label>
+                                  <select class="form-select" aria-label=".form-select-sm example" name="sex" required>
+                                    <option selected value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="age" class="form-label">Age</label>
+                                  <input type="number" class="form-control" id="ages" placeholder="..." name="age" readonly>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label for="cnum" class="form-label">Contact Number</label>
+                                  <input type="tel" class="form-control" pattern="^(09|\+639)\d{9}$" id="cnum" name="cnum" value="" required>
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="email" class="form-label">Email Address</label>
+                                  <input type="tel" class="form-control" id="email" name="email" value="" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <label for="section" class="form-label">Year and Section</label>
+                                  <input type="text" class="form-control" id="section" name="section" value="" required>
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="course" class="form-label">Course</label>
+                                  <?php
+                                  $query1 = "SELECT * FROM courses";
+                                  $result1 = mysqli_query($conn, $query1); ?>
+
+                                  <select class="form-select" name="course" aria-label="Default select example" required>
+                                    <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
+                                      <?php if ($row['course'] != $row1['course_name']) { ?>
+                                        <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
+                                      <?php } else { ?>
+                                        <option value="<?php echo $row['course'] ?>" selected><?php echo $row['course'] ?></option>
+                                    <?php };
+                                    } ?>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer mt-4">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" name="addStudent" class="btn btn-primary">Add Student</button>
+                            </div>
+                          </form>
                         </div>
                       </div>
                     </div>

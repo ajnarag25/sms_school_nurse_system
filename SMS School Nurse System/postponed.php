@@ -25,8 +25,9 @@
                   <div> <a href="#" class="nav_logo"> <i class='bx bx-plus-medical'></i> <span class="nav_logo-name">Patient Reminder</span> </a>
                         <div class="nav_list">
                               <a href="index.php" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
+                              <a href="addpatient.php" class="nav_link"> <i class='bx bx-add-to-queue nav_icon'></i> <span class="nav_name">Add Patient</span> </a>
                               <a href="schedules.php" class="nav_link "> <i class='bx bx-time-five'></i> <span class="nav_name">Schedule Check-up</span> </a>
-                              <a href="patients.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
+                              <a href="studentlist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Patients</span> </a>
                               <a href="postponed.php" class="nav_link active"> <i class='bx bx-message-square-x'></i> <span class="nav_name">Postponed Dates</span> </a>
                               <!-- <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a>
           <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a>
@@ -38,7 +39,8 @@
       <!--Container Main start-->
       <div class="height-100">
             <div class="content-title">
-                  <h1>Postponed Dates</h1>
+                  <br>
+                  <h1>Postponed Check-up</h1>
                   <h5>Here are the list of dates that clinic is closed</h5>
                   <div class="table-container  mt-4 bg-body p-4">
                         <div class="tableData overflow-auto">
