@@ -106,3 +106,21 @@ if (isset($_POST['dateCancel'])) {
  }
  header("Location: index.php");
 }
+
+
+// // search patient
+// if (isset($_POST['findPatient'])) {
+//     $getData = $_POST['searchPatient'];
+//     $sql = "SELECT * FROM patient WHERE firstname = '$getData'";
+//     $result = $conn->query($sql);
+
+//     if ($result->num_rows > 0) {
+//         // output data of each row
+//         while($row = $result->fetch_assoc()) {
+//         $first = $row['firstName'];
+//         $middle = $row['middleName'];
+//         }
+//     } else {
+//         echo "0 results";
+//     }
+// }

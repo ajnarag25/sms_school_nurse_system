@@ -58,40 +58,83 @@ include('connection.php');
           <div class="form-add">
             <form action="functions.php" method="POST">
               <h3>Add Patient</h3>
+              <?php
+                  // search patient
+                    if (isset($_POST['findPatient'])) {
+                      $getData = $_POST['searchPatient'];
+                      $sql = "SELECT * FROM patient WHERE firstName = '$getData' OR middleName = '$getData' OR lastName='$getData' OR studentId = '$getData'";
+                      $result = $conn->query($sql);
+
+                      if ($result->num_rows > 0) {
+                          // output data of each row
+                          while($row = $result->fetch_assoc()) {
+                            $id = $row['studentId'];
+                            $first = $row['firstName'];
+                            $middle = $row['middleName'];
+                            $last = $row['lastName'];
+                            $birth = $row['birthday'];
+                            $sex = $row['sex'];
+                            $age = $row['age'];
+                            $contact = $row['contact_no'];
+                            $email = $row['email'];
+                            $section = $row['section'];
+                            $course = $row['course'];
+                            $date = $row['date'];
+                            $time = $row['time'];
+                            $desc = $row['description'];
+                          }
+                        } else {
+                        $id = "Unable to fetch the data!"; 
+                        $first = "Unable to fetch the data!";
+                        $middle = "Unable to fetch the data!"; 
+                        $last = "Unable to fetch the data!";
+                        $birth = "Unable to fetch the data!";
+                        $sex = "Unable to fetch the data!";
+                        $age = "Unable to fetch the data!";
+                        $contact = "Unable to fetch the data!";
+                        $email = "Unable to fetch the data!";
+                        $section = "Unable to fetch the data!";
+                        $course = "Unable to fetch the data!";
+                        $date = "Unable to fetch the data!";
+                        $time = "Unable to fetch the data!";
+                        $desc = "Unable to fetch the data!";
+                        }
+                    }
+                ?>
               <div class="row mb-3 mt-4">
                 <div class="col-md-6">
                   <label for="fname" class="form-label">Student I.D</label>
-                  <input type="text" name="sId" class="form-control" id="sId" placeholder="...." required>
+                  <input type="text" name="sId" class="form-control" id="sId" placeholder="...." value="<?php echo $id ?>" required>
                 </div>
                 <div class="col-md-6">
                   <label for="fname" class="form-label">First Name</label>
-                  <input type="text" name="fname" class="form-control" id="fname" placeholder="...." required>
+                  <input type="text" name="fname" class="form-control" id="fname" placeholder="...." value="<?php echo $first ?>" required>
                 </div>
                 <div class="col-md-6">
                   <label for="fname" class="form-label">Middle Name</label>
-                  <input type="text" name="mname" class="form-control" id="mname" placeholder="...." required>
+                  <input type="text" name="mname" class="form-control" id="mname" placeholder="...." value="<?php echo $middle ?>" required>
                 </div>
                 <div class="col-md-6">
                   <label for="lname" class="form-label">Last Name</label>
-                  <input type="text" name="lname" class="form-control" id="lname" placeholder="..." required>
+                  <input type="text" name="lname" class="form-control" id="lname" placeholder="..." value="<?php echo $last ?>" required>
                 </div>
               </div>
               <div class="mb-3">
                 <div class="row">
                   <div class="col-md-4">
                     <label for="bday" class="form-label">Birthday</label>
-                    <input type="date" name="bday" class="form-control" onchange="calculate_bday()" id="bday" placeholder="..." required>
+                    <input type="date" name="bday" class="form-control" onchange="calculate_bday()" id="bday" placeholder="..." value="<?php echo $birth ?>" required>
                   </div>
                   <div class="col-md-4">
                     <label for="" class="form-label">Sex</label>
-                    <select class="form-select" aria-label=".form-select-sm example" name="sex" required>
+                    <select class="form-select" aria-label=".form-select-sm example" name="sex" value="<?php echo $sex ?>" required>
                       <option selected value="Male">Male</option>
                       <option value="Female">Female</option>
                     </select>
                   </div>
                   <div class="col-md-4">
                     <label for="age" class="form-label">Age</label>
-                    <input type="number" class="form-control" id="age" placeholder="..." name="age" readonly>
+                    <input type="number" class="form-control" id="age" placeholder="..." name="age" value="<?php echo $age ?>" readonly>
                   </div>
                 </div>
               </div>
@@ -99,11 +142,11 @@ include('connection.php');
                 <div class="row">
                   <div class="col-md-6">
                     <label for="cnum" class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control" pattern="^(09|\+639)\d{9}$" id="cnum" name="cnum" placeholder="+63..." required>
+                    <input type="tel" class="form-control" pattern="^(09|\+639)\d{9}$" id="cnum" name="cnum" placeholder="+63..." value="<?php echo $contact ?>" required>
                   </div>
                   <div class="col-md-6">
                     <label for="email" class="form-label">Email Address</label>
-                    <input type="tel" class="form-control" id="email" name="email" placeholder="..." required>
+                    <input type="tel" class="form-control" id="email" name="email" placeholder="..." value="<?php echo $email ?>" required>
                   </div>
                 </div>
               </div>
@@ -111,7 +154,7 @@ include('connection.php');
                 <div class="row">
                   <div class="col-md-6">
                     <label for="section" class="form-label">Year and Section</label>
-                    <input type="text" class="form-control" id="section" name="section" placeholder="..." required>
+                    <input type="text" class="form-control" id="section" name="section" placeholder="..." value="<?php echo $section ?>" required>
                   </div>
                   <div class="col-md-6">
                     <label for="course" class="form-label">Course</label>
@@ -119,9 +162,10 @@ include('connection.php');
                     $query1 = "SELECT * FROM courses";
                     $result1 = mysqli_query($conn, $query1); ?>
                     <select class="form-select" name="course" aria-label="Default select example" required>
-                      <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
-                        <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
-                      <?php } ?>
+                        <option selected disabled="true" value="<?php echo $course?>"><?php echo $course?></option>
+                        <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
+                            <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
+                        <?php } ?>
                     </select>
                   </div>
                 </div>
@@ -132,16 +176,16 @@ include('connection.php');
               <div class="row mb-3 mt-4">
                 <div class="col-md-6">
                   <label for="date" class="form-label">Date</label>
-                  <input type="date" class="form-control" id="date" name="date" required>
+                  <input type="date" class="form-control" id="date" name="date" value="<?php echo $date?>" required>
                 </div>
                 <div class="col-md-6">
                   <label for="time" class="form-label">Time</label>
-                  <input type="time" class="form-control" id="time" onchange="onTimeChange()" name="time" required>
+                  <input type="time" class="form-control" id="time" onchange="onTimeChange()" name="time" value="<?php echo $time ?>" required>
                 </div>
               </div>
               <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" required></textarea>
+                <input class="form-control" id="exampleFormControlTextarea1" name="description" value="<?php echo $desc?>" rows="3" required>
               </div>
               <div class="col-auto">
                 <button type="submit" name="addpatient" class="btn btn-primary w-100">Add Patient</button>
