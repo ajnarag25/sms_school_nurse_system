@@ -2,7 +2,21 @@
 <html lang="en">
 
 <?php include('connection.php'); 
+
+if(isset($_GET['page']))
+    {
+        $page = $_GET['page'];
+    }
+    else
+    {
+        $page = 1;
+    }
+
+    $num_per_page = 15;
+    $start_from = ($page-1)*15;
+
 ?>
+
 
 <head>
   <meta charset="UTF-8">
@@ -46,7 +60,7 @@
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
-          $query = "SELECT * FROM patient ORDER BY date DESC";
+          $query = "SELECT * from patient limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
           $count = mysqli_num_rows($result);
           $i = 1;
@@ -66,7 +80,7 @@
                 </tr>
               </thead>
               <tbody>
-                <?php while ($row = mysqli_fetch_array($result)) { ?>
+                <?php while ($row=mysqli_fetch_assoc($result)) { ?>
                   <tr>
                     <th scope="row"><?php echo $i ?></th>
                     <td><?php echo $row['studentId'] ?></td>
@@ -101,7 +115,36 @@
           <?php }; ?>
         </div>
       </div>
+      <?php 
+              $pr_query = "select * from patient ";
+              $pr_result = mysqli_query($conn,$pr_query);
+              $total_record = mysqli_num_rows($pr_result );
+              
+              $total_page = ceil($total_record/$num_per_page);
 
+              ?>
+              <br><br>
+              <center>
+                <?php
+                  if($page>1)
+                  {
+                      echo "<a href='schedules.php?page=".($page-1)."' class='btn btn-danger'>Previous</a>";
+                  }
+
+                  
+                  for($i=1;$i<$total_page;$i++)
+                  {
+                      echo "<a href='schedules.php?page=".$i."' class='btn btn-primary'>$i</a>";
+                  }
+
+                  if($i>$page)
+                  {
+                      echo "<a href='schedules.php?page=".($page+1)."' class='btn btn-danger'>Next</a>";
+                  }
+                ?>
+              </center>
+              <?php
+          ?>
     </div>
 
   </div>

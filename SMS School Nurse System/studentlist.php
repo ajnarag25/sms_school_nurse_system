@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('connection.php'); ?>
+<?php include('connection.php'); 
+
+
+  if(isset($_GET['page']))
+  {
+      $page = $_GET['page'];
+  }
+  else
+  {
+      $page = 1;
+  }
+
+  $num_per_page = 10;
+  $start_from = ($page-1)*10;
+
+?>
 
 <head>
   <meta charset="UTF-8">
@@ -62,7 +77,7 @@
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
-          $query = "SELECT * FROM patient";
+          $query = "SELECT * from patient limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
           $count = mysqli_num_rows($result);
           $i = 1;
@@ -320,9 +335,38 @@
               <h5 class="mt-5">No data to show.</h5>
             </center>
           <?php }; ?>
-
         </div>
       </div>
+      <?php 
+        $pr_query = "select * from patient ";
+        $pr_result = mysqli_query($conn,$pr_query);
+        $total_record = mysqli_num_rows($pr_result );
+        
+        $total_page = ceil($total_record/$num_per_page);
+
+        ?>
+        <br>
+        <center>
+          <?php
+            if($page>1)
+            {
+                echo "<a href='studentlist.php?page=".($page-1)."' class='btn btn-danger'>Previous</a>";
+            }
+
+            
+            for($i=1;$i<$total_page;$i++)
+            {
+                echo "<a href='studentlist.php?page=".$i."' class='btn btn-primary'>$i</a>";
+            }
+
+            if($i>$page)
+            {
+                echo "<a href='studentlist.php?page=".($page+1)."' class='btn btn-danger'>Next</a>";
+            }
+          ?>
+        </center>
+        <?php
+    ?>
     </div>
   </div>
 

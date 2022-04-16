@@ -41,7 +41,7 @@
             <div class="content-title">
                   <br>
                   <h1>Postponed Check-up</h1>
-                  <h5>Here are the list of dates that clinic is closed</h5>
+                  <h5>Patient Info</h5>
                   <div class="table-container  mt-4 bg-body p-4">
                         <div class="tableData overflow-auto">
                               <?php
@@ -54,8 +54,13 @@
                                     <thead>
                                           <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Day</th>
-                                                <th scope="col">Date</th>
+                                                <th scope="col">Lastname</th>
+                                                <th scope="col">Firstname</th>
+                                                <th scope="col">Middlename</th>
+                                                <th scope="col">Yr & Section</th>
+                                                <th scope="col">Diagnose</th>
+                                                <th scope="col">Postpone Date</th>
+                                                <th scope="col">Reschedule Date</th>
                                           </tr>
                                     </thead>
                                     <tbody>
