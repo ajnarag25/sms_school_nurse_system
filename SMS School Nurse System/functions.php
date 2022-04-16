@@ -108,19 +108,43 @@ if (isset($_POST['dateCancel'])) {
 }
 
 
-// // search patient
-// if (isset($_POST['findPatient'])) {
-//     $getData = $_POST['searchPatient'];
-//     $sql = "SELECT * FROM patient WHERE firstname = '$getData'";
-//     $result = $conn->query($sql);
-
-//     if ($result->num_rows > 0) {
-//         // output data of each row
-//         while($row = $result->fetch_assoc()) {
-//         $first = $row['firstName'];
-//         $middle = $row['middleName'];
-//         }
-//     } else {
-//         echo "0 results";
-//     }
-// }
+// add student
+if (isset($_POST['addStudent'])) {
+    $firstName = $_POST['fname'];
+    $studentId = $_POST['sId'];
+    $middleName = $_POST['mname'];
+    $lastName = $_POST['lname'];
+    $birthday = $_POST['bday'];
+    $sex = $_POST['sex'];
+    $age = $_POST['age'];
+    $contact_no = $_POST['cnum'];
+    $email = $_POST['email'];
+    $section = $_POST['section'];
+    $course = $_POST['course'];
+    $date = $_POST['date'];
+   
+    $time = $_POST['time'];
+    $timeSplit = explode(":", $time);
+    $hours = $timeSplit[0];
+    $minutes = $timeSplit[1];
+    $meridian = "";
+    if ($hours > 12) {
+     $meridian = 'PM';
+     $hours -= 12;
+     if (strlen($hours) == 1) {
+      $hours = "0" . $hours;
+     }
+    } else if ($hours < 12) {
+     $meridian = 'AM';
+     if ($hours == 0) {
+      $hours = 12;
+     }
+    } else {
+     $meridian = 'AM';
+    }
+    $time = $hours . ":" . $minutes . " " . $meridian;
+   
+    $description = $_POST['description'];
+    $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date','$time','$description','PENDING', '0', '0')") or die($conn->error);
+    header("Location: studentlist.php");
+   }
