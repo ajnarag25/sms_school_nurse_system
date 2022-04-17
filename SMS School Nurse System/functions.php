@@ -38,7 +38,7 @@ if (isset($_POST['addpatient'])) {
  $time = $hours . ":" . $minutes . " " . $meridian;
 
  $description = $_POST['description'];
- $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date','$time','$description','PENDING', '0', '0')") or die($conn->error);
+ $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, resched, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date', 'N/A','$time','$description','PENDING', '0', '0')") or die($conn->error);
  header("Location: addpatient.php");
 }
 
@@ -84,6 +84,7 @@ if (isset($_GET['cancel'])) {
 // set clinic close
 if (isset($_POST['dateCancel'])) {
  $setDate = $_POST['date1'];
+ $resched = $_POST['date2'];
  $query = "SELECT * FROM patient";
  $result = mysqli_query($conn, $query);
  while ($row = mysqli_fetch_array($result)) {
@@ -100,7 +101,7 @@ if (isset($_POST['dateCancel'])) {
    $response = $messagebird->messages->create($message);
    print_r(json_encode($response));
    // UPDATE DATA
-   $conn->query("UPDATE patient SET status='POSTPONED', texted_cancel='1' WHERE id=$id") or die($conn->error);
+   $conn->query("UPDATE patient SET status='POSTPONED', texted_cancel='1', resched='$resched' WHERE id=$id") or die($conn->error);
    $conn->query("INSERT INTO postponed_dates (date) VALUES('$setDate')") or die($conn->error);
   }
  }
@@ -145,6 +146,69 @@ if (isset($_POST['addStudent'])) {
     $time = $hours . ":" . $minutes . " " . $meridian;
    
     $description = $_POST['description'];
-    $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date','$time','$description','PENDING', '0', '0')") or die($conn->error);
+    $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, resched, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date', 'N/A','$time','$description','PENDING', '0', '0')") or die($conn->error);
     header("Location: studentlist.php");
    }
+
+
+
+// done postponed
+if (isset($_GET['done2'])) {
+    $id = $_GET['done2'];
+    $conn->query("UPDATE patient SET status='DONE', texted_cancel='1' WHERE id=$id") or die($conn->error);
+    header("Location: postponed.php");
+   }
+   
+// cancel postponed
+if (isset($_GET['cancel2'])) {
+    $id = $_GET['cancel2'];
+    $conn->query("UPDATE patient SET status='CANCEL', texted_cancel='1' WHERE id=$id") or die($conn->error);
+    header("Location: postponed.php");
+}
+
+
+// import function
+if(isset($_POST["Import"])){
+ 
+ 
+		echo $filename=$_FILES["file"]["tmp_name"];
+ 
+ 
+		 if($_FILES["file"]["size"] > 0)
+		 {
+ 
+		  	$file = fopen($filename, "r");
+	         while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
+	         {
+ 
+	          //It wiil insert a row to our subject table from our csv file`
+	           $sql = "INSERT into patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, resched, time, description, status, texted_checkup, texted_cancel) 
+	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]','$emapData[12]','$emapData[13]','$emapData[14]','$emapData[15]','$emapData[16]','$emapData[17]','$emapData[18]')";
+	         //we are using mysql_query function. it returns a resource on true else False on error
+	          $result = mysqli_query( $conn, $sql );
+				if(! $result )
+				{
+					echo "<script type=\"text/javascript\">
+							alert(\"Invalid File:Please Upload CSV File.\");
+							window.location = \"studentlist.php\"
+						</script>";
+ 
+				}
+ 
+	         }
+	         fclose($file);
+	         //throws a message if data successfully imported to mysql database from excel file
+	         echo "<script type=\"text/javascript\">
+						alert(\"CSV File has been successfully Imported.\");
+						window.location = \"studentlist.php\"
+					</script>";
+ 
+ 
+ 
+			 //close of connection
+			mysqli_close($conn); 
+ 
+ 
+ 
+		 }
+	}	 

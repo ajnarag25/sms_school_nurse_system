@@ -60,7 +60,7 @@ if(isset($_GET['page']))
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
-          $query = "SELECT * from patient limit $start_from,$num_per_page";
+          $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
           $count = mysqli_num_rows($result);
           $i = 1;
@@ -143,6 +143,7 @@ if(isset($_GET['page']))
                   }
                 ?>
               </center>
+              <br><br>
               <?php
           ?>
     </div>

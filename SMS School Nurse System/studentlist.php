@@ -74,7 +74,7 @@
           </div>  
         </div>
         <div class="col-md-2">
-          <button type="button" class="btn btn-outline-secondary">Import</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importCsv">Import</button>
         </div>
         <div class="col-md-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudent">Add <i class='bx bx-plus nav_icon'></i></button>
@@ -83,7 +83,7 @@
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
-          $query = "SELECT * from patient limit $start_from,$num_per_page";
+          $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
           $count = mysqli_num_rows($result);
           $i = 1;
@@ -220,6 +220,28 @@
                       </div>
                     </div>
                   </div>
+
+                   <!-- Modal Import-->
+                   <div class="modal fade" id="importCsv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="functions.php" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                          <p>Please upload a csv file only.</p>
+                          <input type="file" name="file" id="file" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Modal Delete-->
                   <div class="modal fade" id="delete<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -394,6 +416,7 @@
             }
           ?>
         </center>
+        <br><br>
         <?php
     ?>
     </div>

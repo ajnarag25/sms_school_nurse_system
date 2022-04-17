@@ -115,8 +115,12 @@ include('connection.php');
             <p>If you set the date for clinic to be closed it will message all the patient scheduled that day that their checkup will be postponed.</p>
             <form action="functions.php" method="POST">
               <div class="mb-3">
-                <label for="date1" class="form-label">Set Date</label>
+                <label for="date1" class="form-label">Set Date for Closing</label>
                 <input type="date" class="form-control" id="date1" name="date1" required>
+              </div>
+              <div class="mb-3">
+                <label for="date2" class="form-label">Set Date for Rescheduling</label>
+                <input type="date" class="form-control" id="date2" name="date2" required>
               </div>
 
               <div class="mt-3">

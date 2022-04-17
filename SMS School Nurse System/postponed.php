@@ -62,12 +62,13 @@
                                                 <th scope="col">Diagnose</th>
                                                 <th scope="col">Postpone Date</th>
                                                 <th scope="col">Reschedule Date</th>
+                                                <th scope="col">Action</th>
                                           </tr>
                                     </thead>
                                     <tbody>
                                           <?php while ($row = mysqli_fetch_array($result)) { ?>
                                                 <tr>
-                                                      <td><?php echo $row['id'] ?></td>
+                                                      <td><?php echo $i ?></td>
                                                       <td><?php echo $row['studentId'] ?></td>
                                                       <td><?php echo $row['lastName'] ?></td>
                                                       <td><?php echo $row['firstName'] ?></td>
@@ -75,7 +76,11 @@
                                                       <td><?php echo $row['section'] ?></td>
                                                       <td><?php echo $row['description'] ?></td>
                                                       <td><?php echo $row['date'] ?></td>
-                                                      <td><?php echo $row[''] ?></td>
+                                                      <td><?php echo $row['resched'] ?></td>
+                                                      <td>
+                                                      <a class="btn btn-outline-success" href="functions.php?done2=<?php echo $row["id"] ?>">Done</a>
+                                                      <a class="btn btn-outline-danger" href="functions.php?cancel2=<?php echo $row["id"] ?>">Did not visit</a>
+                                                      </td>
                                                 </tr>
                                           <?php $i++;
                                           }; ?>
