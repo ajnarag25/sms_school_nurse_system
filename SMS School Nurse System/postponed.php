@@ -45,7 +45,7 @@
                   <div class="table-container  mt-4 bg-body p-4">
                         <div class="tableData overflow-auto">
                               <?php
-                              $query = "SELECT * FROM postponed_dates ORDER BY date DESC";
+                              $query = "SELECT * FROM patient where status='POSTPONED' ";
                               $result = mysqli_query($conn, $query);
                               $count = mysqli_num_rows($result);
                               $i = 1;
@@ -54,6 +54,7 @@
                                     <thead>
                                           <tr>
                                                 <th scope="col">#</th>
+                                                <th scope="col">Student I.D</th>
                                                 <th scope="col">Lastname</th>
                                                 <th scope="col">Firstname</th>
                                                 <th scope="col">Middlename</th>
@@ -66,9 +67,15 @@
                                     <tbody>
                                           <?php while ($row = mysqli_fetch_array($result)) { ?>
                                                 <tr>
-                                                      <th scope="row"><?php echo $i ?></th>
-                                                      <th><?php echo date('l', strtotime($row['date'])); ?></th>
+                                                      <td><?php echo $row['id'] ?></td>
+                                                      <td><?php echo $row['studentId'] ?></td>
+                                                      <td><?php echo $row['lastName'] ?></td>
+                                                      <td><?php echo $row['firstName'] ?></td>
+                                                      <td><?php echo $row['middleName'] ?></td>
+                                                      <td><?php echo $row['section'] ?></td>
+                                                      <td><?php echo $row['description'] ?></td>
                                                       <td><?php echo $row['date'] ?></td>
+                                                      <td><?php echo $row[''] ?></td>
                                                 </tr>
                                           <?php $i++;
                                           }; ?>
