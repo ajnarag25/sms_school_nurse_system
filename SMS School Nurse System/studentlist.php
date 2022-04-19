@@ -76,14 +76,132 @@
         <div class="col-md-2">
           <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importCsv">Import</button>
         </div>
+
+         <!-- Modal Import-->
+         <div class="modal fade" id="importCsv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="functions.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                  <p>Please upload a csv file only.</p>
+                  <input type="file" name="file" id="file" class="form-control">
+                </div>
+                <div class="modal-footer">
+                <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
         <div class="col-md-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudent">Add <i class='bx bx-plus nav_icon'></i></button>
         </div>
+
+          <!-- Modal Add-->
+          <div class="modal fade" id="addStudent" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="functions.php" method="POST">
+                    <input type="hidden" name="id" value="">
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="fname" class="form-label">Student I.D</label>
+                        <input type="text" name="sId" class="form-control" id="sId" value="" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="fname" class="form-label">First Name</label>
+                        <input type="text" name="fname" class="form-control" id="fname" value="" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="fname" class="form-label">Middle Name</label>
+                        <input type="text" name="mname" class="form-control" id="mname" value="" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="lname" class="form-label">Last Name</label>
+                        <input type="text" name="lname" class="form-control" id="lname" value="" required>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label for="bday" class="form-label">Birthday</label>
+                          <input type="date" name="bday" class="form-control" onchange="calculate_bdays()" id="bdays" placeholder="..." required>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="" class="form-label">Sex</label>
+                          <select class="form-select" aria-label=".form-select-sm example" name="sex" required>
+                            <option selected value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label for="age" class="form-label">Age</label>
+                          <input type="number" class="form-control" id="ages" placeholder="..." name="age" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="cnum" class="form-label">Contact Number</label>
+                          <input type="tel" class="form-control" pattern="^(09|\+639)\d{9}$" id="cnum" name="cnum" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="email" class="form-label">Email Address</label>
+                          <input type="tel" class="form-control" id="email" name="email" value="" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="section" class="form-label">Year and Section</label>
+                          <input type="text" class="form-control" id="section" name="section" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="course" class="form-label">Course</label>
+                          <?php
+                          $query1 = "SELECT * FROM courses";
+                          $result1 = mysqli_query($conn, $query1); ?>
+
+                          <select class="form-select" name="course" aria-label="Default select example" required>
+                            <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
+                              <?php if ($row['course'] != $row1['course_name']) { ?>
+                                <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
+                              <?php } else { ?>
+                                <option value="<?php echo $row['course'] ?>" selected><?php echo $row['course'] ?></option>
+                            <?php };
+                            } ?>
+                          </select>
+                          <br>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer mt-4">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" name="addStudent" class="btn btn-primary">Add Student</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
+
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
           <?php
-          $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
+          $query = "SELECT * from imported ORDER BY id DESC limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
           $count = mysqli_num_rows($result);
           $i = 1;
@@ -119,7 +237,7 @@
                     <td><?php echo $row['age'] ?></td>
                     <td><?php echo $row['contact_no'] ?></td>
                     <td><?php echo $row['email'] ?></td>
-                    <td><?php echo $row['section'] ?></td>
+                    <td><?php echo $row['yr_section'] ?></td>
                     <td><?php echo $row['course'] ?></td>
                     <td>
                       <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?php echo $row['id'] ?>">Edit</button>
@@ -127,7 +245,7 @@
                       <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['id'] ?>">Delete</button>
                     </td>
                   </tr>
-
+                  
                   <div class="modal fade" id="edit<?php echo $row['id'] ?>" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
@@ -191,7 +309,7 @@
                               <div class="row">
                                 <div class="col-md-6">
                                   <label for="section" class="form-label">Year and Section</label>
-                                  <input type="text" class="form-control" id="section" name="section" value="<?php echo $row['section'] ?>" required>
+                                  <input type="text" class="form-control" id="section" name="section" value="<?php echo $row['yr_section'] ?>" required>
                                 </div>
                                 <div class="col-md-6">
                                   <label for="course" class="form-label">Course</label>
@@ -221,27 +339,6 @@
                     </div>
                   </div>
 
-                   <!-- Modal Import-->
-                   <div class="modal fade" id="importCsv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="functions.php" method="POST" enctype="multipart/form-data">
-                        <div class="modal-body">
-                          <p>Please upload a csv file only.</p>
-                          <input type="file" name="file" id="file" class="form-control">
-                        </div>
-                        <div class="modal-footer">
-                        <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
-                        </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
                   <!-- Modal Delete-->
                   <div class="modal fade" id="delete<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -261,116 +358,6 @@
                     </div>
                   </div>
                   
-                  <!-- Modal Add-->
-                  <div class="modal fade" id="addStudent" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <form action="functions.php" method="POST">
-                            <input type="hidden" name="id" value="">
-                            <div class="row mb-3">
-                              <div class="col-md-6">
-                                <label for="fname" class="form-label">Student I.D</label>
-                                <input type="text" name="sId" class="form-control" id="sId" value="" required>
-                              </div>
-                              <div class="col-md-6">
-                                <label for="fname" class="form-label">First Name</label>
-                                <input type="text" name="fname" class="form-control" id="fname" value="" required>
-                              </div>
-                              <div class="col-md-6">
-                                <label for="fname" class="form-label">Middle Name</label>
-                                <input type="text" name="mname" class="form-control" id="mname" value="" required>
-                              </div>
-                              <div class="col-md-6">
-                                <label for="lname" class="form-label">Last Name</label>
-                                <input type="text" name="lname" class="form-control" id="lname" value="" required>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div class="row">
-                                <div class="col-md-4">
-                                  <label for="bday" class="form-label">Birthday</label>
-                                  <input type="date" name="bday" class="form-control" onchange="calculate_bdays()" id="bdays" placeholder="..." required>
-                                </div>
-                                <div class="col-md-4">
-                                  <label for="" class="form-label">Sex</label>
-                                  <select class="form-select" aria-label=".form-select-sm example" name="sex" required>
-                                    <option selected value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                  </select>
-                                </div>
-                                <div class="col-md-4">
-                                  <label for="age" class="form-label">Age</label>
-                                  <input type="number" class="form-control" id="ages" placeholder="..." name="age" readonly>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label for="cnum" class="form-label">Contact Number</label>
-                                  <input type="tel" class="form-control" pattern="^(09|\+639)\d{9}$" id="cnum" name="cnum" value="" required>
-                                </div>
-                                <div class="col-md-6">
-                                  <label for="email" class="form-label">Email Address</label>
-                                  <input type="tel" class="form-control" id="email" name="email" value="" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label for="section" class="form-label">Year and Section</label>
-                                  <input type="text" class="form-control" id="section" name="section" value="" required>
-                                </div>
-                                <div class="col-md-6">
-                                  <label for="course" class="form-label">Course</label>
-                                  <?php
-                                  $query1 = "SELECT * FROM courses";
-                                  $result1 = mysqli_query($conn, $query1); ?>
-
-                                  <select class="form-select" name="course" aria-label="Default select example" required>
-                                    <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
-                                      <?php if ($row['course'] != $row1['course_name']) { ?>
-                                        <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
-                                      <?php } else { ?>
-                                        <option value="<?php echo $row['course'] ?>" selected><?php echo $row['course'] ?></option>
-                                    <?php };
-                                    } ?>
-                                  </select>
-                                  <br>
-                                </div>
-                                <h4>Check-Up Schedule</h4>
-                                  <div class="row mb-3 mt-4">
-                                    <div class="col-md-6">
-                                      <label for="date" class="form-label">Date</label>
-                                      <input type="date" class="form-control" id="date" name="date" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="time" class="form-label">Time</label>
-                                      <input type="time" class="form-control" id="time" onchange="onTimeChange()" name="time" required>
-                                    </div>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" required></textarea>
-                                  </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer mt-4">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="submit" name="addStudent" class="btn btn-primary">Add Student</button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                 <?php $i++;
                 }; ?>
               </tbody>
@@ -389,7 +376,7 @@
         </div>
       </div>
       <?php 
-        $pr_query = "select * from patient ";
+        $pr_query = "select * from imported ";
         $pr_result = mysqli_query($conn,$pr_query);
         $total_record = mysqli_num_rows($pr_result );
         

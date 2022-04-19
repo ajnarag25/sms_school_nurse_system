@@ -62,7 +62,7 @@ include('connection.php');
                   // search patient
                     if (isset($_POST['findPatient'])) {
                       $getData = $_POST['searchPatient'];
-                      $sql = "SELECT * FROM patient WHERE firstName = '$getData' OR middleName = '$getData' OR lastName='$getData' OR studentId = '$getData'";
+                      $sql = "SELECT * FROM imported WHERE firstName = '$getData' OR middleName = '$getData' OR lastName='$getData' OR studentId = '$getData'";
                       $result = $conn->query($sql);
 
                       if ($result->num_rows > 0) {
@@ -77,11 +77,8 @@ include('connection.php');
                             $age = $row['age'];
                             $contact = $row['contact_no'];
                             $email = $row['email'];
-                            $section = $row['section'];
+                            $section = $row['yr_section'];
                             $course = $row['course'];
-                            $date = $row['date'];
-                            $time = $row['time'];
-                            $desc = $row['description'];
                           }
                         } else {
                         $id = "Unable to fetch the data!"; 
@@ -176,16 +173,16 @@ include('connection.php');
               <div class="row mb-3 mt-4">
                 <div class="col-md-6">
                   <label for="date" class="form-label">Date</label>
-                  <input type="date" class="form-control" id="date" name="date" value="<?php echo $date?>" required>
+                  <input type="date" class="form-control" id="date" name="date" required>
                 </div>
                 <div class="col-md-6">
                   <label for="time" class="form-label">Time</label>
-                  <input type="time" class="form-control" id="time" onchange="onTimeChange()" name="time" value="<?php echo $time ?>" required>
+                  <input type="time" class="form-control" id="time" onchange="onTimeChange()" name="time" required>
                 </div>
               </div>
               <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                <input class="form-control" id="exampleFormControlTextarea1" name="description" value="<?php echo $desc?>" rows="3" required>
+                <input class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" required>
               </div>
               <div class="col-auto">
                 <button type="submit" name="addpatient" class="btn btn-primary w-100">Add Patient</button>

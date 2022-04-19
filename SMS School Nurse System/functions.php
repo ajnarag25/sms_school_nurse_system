@@ -56,14 +56,14 @@ if (isset($_POST['updatePatient'])) {
  $email = $_POST['email'];
  $section = $_POST['section'];
  $course = $_POST['course'];
- $conn->query("UPDATE patient SET studentId='$studentId', firstName='$firstName', middleName='$middleName', lastName='$lastName', birthday='$birthday', sex='$sex', age='$age', contact_no='$contact_no', email='$email', section='$section', course='$course' WHERE id=$id") or die($conn->error);
+ $conn->query("UPDATE imported SET studentId='$studentId', firstName='$firstName', middleName='$middleName', lastName='$lastName', birthday='$birthday', sex='$sex', age='$age', contact_no='$contact_no', email='$email', yr_section='$section', course='$course' WHERE id=$id") or die($conn->error);
  header("Location: studentlist.php");
 }
 
 // delete
 if (isset($_GET['delete'])) {
  $id = $_GET['delete'];
- $conn->query("DELETE FROM patient WHERE id=$id") or die($conn->error);
+ $conn->query("DELETE FROM imported WHERE id=$id") or die($conn->error);
  header("Location: studentlist.php");
 }
 
@@ -122,31 +122,8 @@ if (isset($_POST['addStudent'])) {
     $email = $_POST['email'];
     $section = $_POST['section'];
     $course = $_POST['course'];
-    $date = $_POST['date'];
-   
-    $time = $_POST['time'];
-    $timeSplit = explode(":", $time);
-    $hours = $timeSplit[0];
-    $minutes = $timeSplit[1];
-    $meridian = "";
-    if ($hours > 12) {
-     $meridian = 'PM';
-     $hours -= 12;
-     if (strlen($hours) == 1) {
-      $hours = "0" . $hours;
-     }
-    } else if ($hours < 12) {
-     $meridian = 'AM';
-     if ($hours == 0) {
-      $hours = 12;
-     }
-    } else {
-     $meridian = 'AM';
-    }
-    $time = $hours . ":" . $minutes . " " . $meridian;
-   
-    $description = $_POST['description'];
-    $conn->query("INSERT INTO patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, resched, time, description, status, texted_checkup, texted_cancel) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course','$date', 'N/A','$time','$description','PENDING', '0', '0')") or die($conn->error);
+
+    $conn->query("INSERT INTO imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course')") or die($conn->error);
     header("Location: studentlist.php");
    }
 
@@ -182,8 +159,8 @@ if(isset($_POST["Import"])){
 	         {
  
 	          //It wiil insert a row to our subject table from our csv file`
-	           $sql = "INSERT into patient (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, section, course, date, resched, time, description, status, texted_checkup, texted_cancel) 
-	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]','$emapData[12]','$emapData[13]','$emapData[14]','$emapData[15]','$emapData[16]','$emapData[17]','$emapData[18]')";
+	           $sql = "INSERT into imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) 
+	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]')";
 	         //we are using mysql_query function. it returns a resource on true else False on error
 	          $result = mysqli_query( $conn, $sql );
 				if(! $result )
