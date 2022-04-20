@@ -283,7 +283,8 @@
                                 <div class="col-md-4">
                                   <label for="" class="form-label">Sex</label>
                                   <select class="form-select" aria-label=".form-select-sm example" name="sex" required>
-                                    <option selected value="Male">Male</option>
+                                    <option selected readonly value="<?php echo $row['sex'] ?>"><?php echo $row['sex'] ?></option>
+                                    <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                   </select>
                                 </div>
@@ -317,14 +318,11 @@
                                   $query1 = "SELECT * FROM courses";
                                   $result1 = mysqli_query($conn, $query1); ?>
 
-                                  <select class="form-select" name="course" aria-label="Default select example" required>
-                                    <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
-                                      <?php if ($row['course'] != $row1['course_name']) { ?>
-                                        <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
-                                      <?php } else { ?>
-                                        <option value="<?php echo $row['course'] ?>" selected><?php echo $row['course'] ?></option>
-                                    <?php };
-                                    } ?>
+                                <select class="form-select" name="course" aria-label="Default select example" required>
+                                      <option selected readonly value="<?php echo $row['course']?>"><?php echo $row['course']?></option>
+                                      <?php while ($row1 = mysqli_fetch_array($result1)) { ?>
+                                          <option value="<?php echo $row1['course_name'] ?>"><?php echo $row1['course_name'] ?></option>
+                                      <?php } ?>
                                   </select>
                                 </div>
                               </div>

@@ -59,6 +59,8 @@ if(isset($_GET['page']))
       <h5>Schedule history of patients</h5>
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
+        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#clearAll">Clear All</button>
+        <br><br>
           <?php
           $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
           $result = mysqli_query($conn, $query);
@@ -77,6 +79,7 @@ if(isset($_GET['page']))
                   <th scope="col">Check-up Date</th>
                   <th scope="col">Diagnose</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,6 +106,27 @@ if(isset($_GET['page']))
                       <td><span class="badge bg-success"><?php echo $row['status'] ?></span></h3>
                       </td>
                     <?php } ?>
+                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['id'] ?>">Delete</button></td>
+
+                     <!-- Modal Delete-->
+                      <div class="modal fade" id="delete<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Schedule</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p>Are you sure you want to delete this?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger" href="functions.php?deleteSched=<?php echo $row["id"] ?>">Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                   </tr>
                 <?php $i++;
                 }; ?>
@@ -149,6 +173,28 @@ if(isset($_GET['page']))
     </div>
 
   </div>
+  
+
+  <!-- Modal Clear All-->
+  <div class="modal fade" id="clearAll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete All Schedule Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to clear all data?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form action="functions.php" method="POST">
+              <button class="btn btn-danger" name="clearAll">Delete All</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/app.js"></script>

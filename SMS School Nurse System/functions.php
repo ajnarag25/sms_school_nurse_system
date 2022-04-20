@@ -189,3 +189,17 @@ if(isset($_POST["Import"])){
  
 		 }
 	}	 
+
+
+// delete schedule
+if (isset($_GET['deleteSched'])) {
+    $id = $_GET['deleteSched'];
+    $conn->query("DELETE FROM patient WHERE id=$id") or die($conn->error);
+    header("Location: schedules.php");
+   }
+   
+// clear all data
+if (isset($_POST['clearAll'])) {
+    $conn->query("TRUNCATE TABLE patient;") or die($conn->error);
+    header("Location: schedules.php");
+}
