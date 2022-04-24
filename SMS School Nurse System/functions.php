@@ -85,6 +85,7 @@ if (isset($_GET['cancel'])) {
 if (isset($_POST['dateCancel'])) {
  $setDate = $_POST['date1'];
  $resched = $_POST['date2'];
+ $getmsg = $_POST['composemsg'];
  $query = "SELECT * FROM patient";
  $result = mysqli_query($conn, $query);
  while ($row = mysqli_fetch_array($result)) {
@@ -93,11 +94,11 @@ if (isset($_POST['dateCancel'])) {
    $name = $row['firstName'] . " " . $row['lastName'];
    // send message postponed_dates
    require_once 'vendor/autoload.php';
-   $messagebird = new MessageBird\Client('jZ7bsnUBaNxKrEwh8oWiNcxCp');
+   $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
    $message = new MessageBird\Objects\Message;
-   $message->originator = '+639633071367';
-   $message->recipients = ['+639633071367'];
-   $message->body = 'Hi ' . $name . '! Im sorry your checkup was postponed because the clinic is closed';
+   $message->originator = '+639089637505';
+   $message->recipients = ['+639089637505'];
+   $message->body = 'Hi ' . $name . '. '.  $getmsg;
    $response = $messagebird->messages->create($message);
    print_r(json_encode($response));
    // UPDATE DATA
@@ -157,29 +158,46 @@ if(isset($_POST["Import"])){
 		  	$file = fopen($filename, "r");
 	         while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
 	         {
- 
-	          //It wiil insert a row to our subject table from our csv file`
-	           $sql = "INSERT into imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) 
-	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]')";
-	         //we are using mysql_query function. it returns a resource on true else False on error
-	          $result = mysqli_query( $conn, $sql );
-				if(! $result )
-				{
-					echo "<script type=\"text/javascript\">
-							alert(\"Invalid File:Please Upload CSV File.\");
-							window.location = \"studentlist.php\"
-						</script>";
- 
-				}
- 
+      
+                $d1 = $emapData[1];
+                $d2 = $emapData[2];
+                $d3 = $emapData[3];
+                $d4 = $emapData[4];
+
+                $query_code = "SELECT * FROM imported WHERE studentId='$d1' OR firstName='$d2'";
+                $result2 = $conn->query($query_code);
+
+                if ($result2->num_rows > 0) {
+                    echo "<script type=\"text/javascript\">
+                    alert(\"Data is already in the database!\");
+                    window.location = \"studentlist.php\"
+                    </script>";
+                    break;
+                } else {
+                    $sql = "INSERT into imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) 
+                    values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]','$emapData[8]','$emapData[9]','$emapData[10]','$emapData[11]')";
+    
+                    $result = mysqli_query( $conn, $sql );
+                    
+                    if(! $result )
+                    {
+                        echo "<script type=\"text/javascript\">
+                                alert(\"Invalid File:Please Upload CSV File.\");
+                                window.location = \"studentlist.php\"
+                            </script>";
+                            break;
+    
+                    }
+                }
+
 	         }
-	         fclose($file);
-	         //throws a message if data successfully imported to mysql database from excel file
-	         echo "<script type=\"text/javascript\">
-						alert(\"CSV File has been successfully Imported.\");
-						window.location = \"studentlist.php\"
-					</script>";
- 
+             fclose($file);
+             //throws a message if data successfully imported to mysql database from excel file
+             echo "<script type=\"text/javascript\">
+                        alert(\"CSV File has been successfully Imported.\");
+                        window.location = \"studentlist.php\"
+                    </script>";
+	        
  
  
 			 //close of connection
@@ -202,4 +220,25 @@ if (isset($_GET['deleteSched'])) {
 if (isset($_POST['clearAll'])) {
     $conn->query("TRUNCATE TABLE patient;") or die($conn->error);
     header("Location: schedules.php");
+}
+
+// compose msg
+if (isset($_POST['sendMsg'])) {
+    $id = $_POST['id'];
+    $msg = $_POST['msg'];
+    $firstname = $_POST['first']; 
+    $lastname = $_POST['last'];
+    $name = $firstname. ' '.$lastname;
+    // send sms
+    require_once 'vendor/autoload.php';
+    $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
+    $message = new MessageBird\Objects\Message;
+    $message->originator = '+639089637505';
+    $message->recipients = ['+639089637505'];
+    $message->body = 'Hi ' . $name . '. '. $msg ;
+    $response = $messagebird->messages->create($message);
+    print_r(json_encode($response));
+    // update the texted_checkup to 1
+    $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
+    header("Location: index.php");
 }
