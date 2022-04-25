@@ -3,7 +3,6 @@
 
 <?php include('connection.php'); 
 
-
   if(isset($_GET['page']))
   {
       $page = $_GET['page'];
@@ -69,10 +68,12 @@
           <h5>Students</h5>
         </div>
         <div class="col-md-4">
-          <div class="input-group" >
-            <input type="search" class="form-control rounded" placeholder="Search" onkeyup="searchStudent()" id="searchStudent" />
-            <button type="button" class="btn btn-outline-primary"><i class='bx bx-search nav_icon'></i></button>
-          </div>  
+          <!-- <form action="studentlist.php" method="POST"> -->
+            <div class="input-group" >
+              <input type="search" class="form-control rounded"  placeholder="Search" onkeyup="searchStudent()" id="searchStudent" />
+              <button type="submit" class="btn btn-outline-primary"><i class='bx bx-search nav_icon'></i></button>
+            </div>  
+          <!-- </form> -->
         </div>
         <div class="col-md-2">
           <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importCsv">Import</button>
@@ -89,7 +90,7 @@
                 <form action="functions.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                   <p>Please upload a csv file only.</p>
-                  <input type="file" name="file" id="file" class="form-control">
+                  <input type="file" name="file" id="file" class="form-control" required>
                 </div>
                 <div class="modal-footer">
                 <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
@@ -246,7 +247,6 @@
                       <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<?php echo $row['id'] ?>">Delete</button>
                     </td>
                   </tr>
-                  
                   <div class="modal fade" id="edit<?php echo $row['id'] ?>" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
@@ -356,7 +356,7 @@
                       </div>
                     </div>
                   </div>
-                  
+             
                 <?php $i++;
                 }; ?>
               </tbody>
@@ -367,11 +367,13 @@
                 <h4 class="mt-3">Search not found...</h4>
               </div>
             </div>
+            
           <?php  } else { ?>
             <center>
               <h5 class="mt-5">No data to show.</h5>
             </center>
           <?php }; ?>
+          
         </div>
       </div>
       <?php 

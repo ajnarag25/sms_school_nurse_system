@@ -124,8 +124,21 @@ if (isset($_POST['addStudent'])) {
     $section = $_POST['section'];
     $course = $_POST['course'];
 
-    $conn->query("INSERT INTO imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course')") or die($conn->error);
-    header("Location: studentlist.php");
+    $query_code = "SELECT * FROM imported WHERE studentId='$studentId' AND firstName='$firstName'";
+    $result = $conn->query($query_code);
+    
+    
+    if ($result->num_rows > 0) {
+        echo "<script type=\"text/javascript\">
+        alert(\"Data is already in the database!\");
+        window.location = \"studentlist.php\"
+        </script>";
+    }else{
+        $conn->query("INSERT INTO imported (studentId, firstName, middleName,lastName, birthday, sex, age, contact_no, email, yr_section, course) VALUES('$studentId','$firstName','$middleName','$lastName','$birthday','$sex','$age','$contact_no','$email','$section','$course')") or die($conn->error);
+        header("Location: studentlist.php");
+    }
+
+   
    }
 
 
@@ -164,7 +177,7 @@ if(isset($_POST["Import"])){
                 $d3 = $emapData[3];
                 $d4 = $emapData[4];
 
-                $query_code = "SELECT * FROM imported WHERE studentId='$d1' OR firstName='$d2'";
+                $query_code = "SELECT * FROM imported WHERE studentId='$d1' AND firstName='$d2'";
                 $result2 = $conn->query($query_code);
 
                 if ($result2->num_rows > 0) {
