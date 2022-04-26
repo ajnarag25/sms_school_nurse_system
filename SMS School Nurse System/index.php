@@ -79,7 +79,8 @@ include('connection.php');
                         <td>
                         <a class="btn btn-outline-success" href="functions.php?done=<?php echo $row["id"] ?>">Done</a>
                         <a class="btn btn-outline-danger" href="functions.php?cancel=<?php echo $row["id"] ?>">Did not visit</a>
-                        <a class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#compose<?php echo $row['id'] ?>">Compose</a>
+                        <a class="btn btn-outline-primary" href="functions.php?sendMsg=<?php echo $row['firstName'];?>">Send</a>
+                        <a class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#compose<?php echo $row['id'] ?>">Edit Message</a>
                         </td>
                     </tr>
                         <!-- Modal Compose Message-->
@@ -92,15 +93,18 @@ include('connection.php');
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
+                                <?php 
+                                    $querys = "SELECT * FROM sms WHERE id=1";
+                                    $results = $conn->query($querys);
+                                    while ($rows = mysqli_fetch_array($results)) {
+                                ?>
                                   <p>Compose Message for <?php echo $row['firstName']?>:</p>
-                                  <input type="hidden" name="id" value="<?php echo $row['id']?>">
-                                  <input type="hidden" name="first" value="<?php echo $row['firstName']?>">
-                                  <input type="hidden" name="last" value="<?php echo $row['lastName']?>">
-                                  <textarea class="form-control" name="msg" id="" cols="30" rows="5"></textarea>
+                                  <textarea class="form-control" name="msg" id="" cols="30" rows="5" value="<?php echo $rows['msg']; ?>"><?php echo $rows['msg']; ?></textarea>
+                                  <?php };?>
                               </div>
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                  <button type="submit" class="btn btn-success" name="sendMsg">Send</button>
+                                  <button type="submit" class="btn btn-success" name="editMsg">Edit</button>
                               </div>
                               </div>
                           </div>

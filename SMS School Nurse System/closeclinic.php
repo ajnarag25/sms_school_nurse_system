@@ -49,18 +49,46 @@ include('connection.php');
         <form action="functions.php" method="POST">
             <div class="mb-3">
             <label for="date1" class="form-label">Set Date for Closing</label>
-            <input type="date" class="form-control" id="date1" name="date1" required>
+            <input type="date" class="form-control" id="date1" name="date1" >
             </div>
             <div class="mb-3">
             <label for="date2" class="form-label">Set Date for Rescheduling</label>
-            <input type="date" class="form-control" id="date2" name="date2" required>
+            <input type="date" class="form-control" id="date2" name="date2"  >
             </div>
             <div class="mb-3">
-                <label for="">Compose Message</label>
-                <textarea class="form-control" name="composemsg" id="" rows="3" required></textarea>
+                <label for="">Message</label>
+                <?php 
+                    $querys = "SELECT * FROM sms WHERE id=2";
+                    $results = $conn->query($querys);
+                    while ($rows = mysqli_fetch_array($results)) {
+                ?>
+                <textarea readonly class="form-control" name="composemsg" id="" cols="30" rows="5" value="<?php echo $rows['msg']; ?>"><?php echo $rows['msg']; ?></textarea>
             </div>
 
             <div class="mt-3">
+            <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#editModal<?php echo $rows['id']?>">
+                Edit Message
+            </button>
+             <!-- Edit Modal -->
+             <div class="modal fade" id="editModal<?php echo $rows['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <textarea required class="form-control" name="msg" id="" cols="30" rows="5" value="<?php echo $rows['msg']; ?>"><?php echo $rows['msg']; ?></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="editMsgclinic">Edit</button>
+                </div>
+                </div>
+            </div>
+            </div>
+            <?php };?>
+            <br>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Set clinic close
             </button>
@@ -83,6 +111,7 @@ include('connection.php');
                 </div>
             </div>
             </div>
+
         </form>
         </div>
 

@@ -236,22 +236,38 @@ if (isset($_POST['clearAll'])) {
 }
 
 // compose msg
-if (isset($_POST['sendMsg'])) {
-    $id = $_POST['id'];
-    $msg = $_POST['msg'];
-    $firstname = $_POST['first']; 
-    $lastname = $_POST['last'];
-    $name = $firstname. ' '.$lastname;
-    // send sms
-    require_once 'vendor/autoload.php';
-    $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
-    $message = new MessageBird\Objects\Message;
-    $message->originator = '+639089637505';
-    $message->recipients = ['+639089637505'];
-    $message->body = 'Hi ' . $name . '. '. $msg ;
-    $response = $messagebird->messages->create($message);
-    print_r(json_encode($response));
-    // update the texted_checkup to 1
-    $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
+if (isset($_POST['editMsg'])) {
+    $message = $_POST['msg'];
+    $conn->query("UPDATE sms SET msg='$message' WHERE id=1") or die($conn->error);
+    // $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
     header("Location: index.php");
+}
+
+// get data sms
+if (isset($_GET['sendMsg'])) {
+    $first = $_GET['sendMsg'];
+    $query = "SELECT * FROM sms";
+    $result = $conn->query($query);
+   
+    while ($row = mysqli_fetch_array($result)) {
+        require_once 'vendor/autoload.php';
+        $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
+        $message = new MessageBird\Objects\Message;
+        $message->originator = '+639089637505';
+        $message->recipients = ['+639089637505'];
+        $message->body = 'Hi ' . $first . '. '. $row['msg'] ;
+        $response = $messagebird->messages->create($message);
+        print_r(json_encode($response));
+        header("Location: index.php");
+
+    }
+
+}
+
+// compose msg
+if (isset($_POST['editMsgclinic'])) {
+    $message = $_POST['msg'];
+    $conn->query("UPDATE sms SET msg='$message' WHERE id=2") or die($conn->error);
+    // $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
+    header("Location: closeclinic.php");
 }
