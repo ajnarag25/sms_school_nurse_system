@@ -235,12 +235,12 @@ if (isset($_POST['clearAll'])) {
     header("Location: schedules.php");
 }
 
-// compose msg
+// edit msg
 if (isset($_POST['editMsg'])) {
     $message = $_POST['msg'];
     $conn->query("UPDATE sms SET msg='$message' WHERE id=1") or die($conn->error);
     // $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
-    header("Location: index.php");
+    header("Location: msg_setting.php");
 }
 
 // get data sms
@@ -248,14 +248,21 @@ if (isset($_GET['sendMsg'])) {
     $first = $_GET['sendMsg'];
     $query = "SELECT * FROM sms";
     $result = $conn->query($query);
-   
+    
+    $get_query = "SELECT * from patient WHERE firstName='$first' AND status='PENDING'";
+    $result_query = $conn->query($get_query);
+    while($r = mysqli_fetch_array($result_query)){
+        $dates = $r['date'];
+        $times = $r['time'];
+    }
+
     while ($row = mysqli_fetch_array($result)) {
         require_once 'vendor/autoload.php';
         $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
         $message = new MessageBird\Objects\Message;
         $message->originator = '+639089637505';
         $message->recipients = ['+639089637505'];
-        $message->body = 'Hi ' . $first . '. '. $row['msg'] ;
+        $message->body = 'Hi ' . $first . '. '.'Your date and time of check-up is'.' '.$dates.' '.$times.'. '. $row['msg'] ;
         $response = $messagebird->messages->create($message);
         print_r(json_encode($response));
         header("Location: index.php");

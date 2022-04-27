@@ -81,36 +81,8 @@ include('connection.php');
                         <a class="btn btn-outline-success" href="functions.php?done=<?php echo $row["id"] ?>">Done</a>
                         <a class="btn btn-outline-danger" href="functions.php?cancel=<?php echo $row["id"] ?>">Did not visit</a>
                         <a class="btn btn-outline-primary" href="functions.php?sendMsg=<?php echo $row['firstName'];?>">Send</a>
-                        <a class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#compose<?php echo $row['id'] ?>">Edit Message</a>
                         </td>
                     </tr>
-                        <!-- Modal Compose Message-->
-                        <div class="modal fade" id="compose<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <form action="functions.php" method="POST">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                              <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Send Message</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                <?php 
-                                    $querys = "SELECT * FROM sms WHERE id=1";
-                                    $results = $conn->query($querys);
-                                    while ($rows = mysqli_fetch_array($results)) {
-                                ?>
-                                  <p>Compose Message for <?php echo $row['firstName']?>:</p>
-                                  <textarea class="form-control" name="msg" id="" cols="30" rows="5" value="<?php echo $rows['msg']; ?>"><?php echo $rows['msg']; ?></textarea>
-                                  <?php };?>
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                  <button type="submit" class="btn btn-success" name="editMsg">Edit</button>
-                              </div>
-                              </div>
-                          </div>
-                        </form>
-                        </div>
                 <?php $i++;
                     };
                 }; ?>
