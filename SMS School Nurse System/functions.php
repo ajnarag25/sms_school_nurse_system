@@ -94,10 +94,10 @@ if (isset($_POST['dateCancel'])) {
    $name = $row['firstName'] . " " . $row['lastName'];
    // send message postponed_dates
    require_once 'vendor/autoload.php';
-   $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
+   $messagebird = new MessageBird\Client('1M8sUxPMN3iQE3duBxL5HTfgH');
    $message = new MessageBird\Objects\Message;
-   $message->originator = '+639089637505';
-   $message->recipients = ['+639089637505'];
+   $message->originator = '+639090728988';
+   $message->recipients = ['+639090728988'];
    $message->body = 'Hi ' . $name . '. '.  $getmsg;
    $response = $messagebird->messages->create($message);
    print_r(json_encode($response));
@@ -246,7 +246,7 @@ if (isset($_POST['editMsg'])) {
 // get data sms
 if (isset($_GET['sendMsg'])) {
     $first = $_GET['sendMsg'];
-    $query = "SELECT * FROM sms";
+    $query = "SELECT * FROM sms where id = 1";
     $result = $conn->query($query);
     
     $get_query = "SELECT * from patient WHERE firstName='$first' AND status='PENDING'";
@@ -258,11 +258,11 @@ if (isset($_GET['sendMsg'])) {
 
     while ($row = mysqli_fetch_array($result)) {
         require_once 'vendor/autoload.php';
-        $messagebird = new MessageBird\Client('NKrmkmsxpxGDzJglOln2Y4g7p');
+        $messagebird = new MessageBird\Client('1M8sUxPMN3iQE3duBxL5HTfgH');
         $message = new MessageBird\Objects\Message;
-        $message->originator = '+639089637505';
-        $message->recipients = ['+639089637505'];
-        $message->body = 'Hi ' . $first . '. '.'Your date and time of check-up is'.' '.$dates.' '.$times.'. '. $row['msg'] ;
+        $message->originator = '+639090728988';
+        $message->recipients = ['+639090728988'];
+        $message->body = 'Hi ' . $first . '. '.'May we remind you today'.' '.$dates.', '.'you have a follow up check-up at'.$times.' as scheduled'.'. '. $row['msg'] ;
         $response = $messagebird->messages->create($message);
         print_r(json_encode($response));
         header("Location: index.php");
@@ -277,4 +277,38 @@ if (isset($_POST['editMsgclinic'])) {
     $conn->query("UPDATE sms SET msg='$message' WHERE id=2") or die($conn->error);
     // $conn->query("UPDATE patient SET texted_checkup='1' WHERE id=$id") or die($conn->error);
     header("Location: closeclinic.php");
+}
+
+
+// export
+if (isset($_POST['Export'])) {
+function filterData(&$str){ 
+    $str = preg_replace("/\t/", "\\t", $str); 
+    $str = preg_replace("/\r?\n/", "\\n", $str); 
+    if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"'; 
+} 
+ 
+$fileName = "sms_school_nurse_system_data_" . date('Y-m-d') . ".xls"; 
+ 
+$fields = array('ID', 'STUDENT ID', 'FIRST NAME', 'MIDDLE NAME', 'LAST NAME', 'BIRTHDAY', 'SEX', 'AGE', 'CONTACT NO', 'EMAIL', 'YEAR & SECTION', 'COURSE'); 
+ 
+$excelData = implode("\t", array_values($fields)) . "\n"; 
+ 
+$query = $conn->query("SELECT * FROM imported ORDER BY id ASC"); 
+if($query->num_rows > 0){ 
+    while($row = $query->fetch_assoc()){ 
+        $lineData = array($row['id'], $row['studentId'], $row['firstName'], $row['middleName'], $row['lastName'], $row['birthday'], $row['sex'], $row['age'], $row['contact_no'], $row['email'], $row['yr_section'], $row['course']); 
+        array_walk($lineData, 'filterData'); 
+        $excelData .= implode("\t", array_values($lineData)) . "\n"; 
+    } 
+}else{ 
+    $excelData .= 'No records found...'. "\n"; 
+} 
+ 
+header("Content-Type: application/vnd.ms-excel"); 
+header("Content-Disposition: attachment; filename=\"$fileName\""); 
+ 
+echo $excelData; 
+ 
+exit;
 }
