@@ -61,7 +61,8 @@ if(isset($_GET['page']))
       <h5>Schedule history of patients</h5>
       <div class="table-container  mt-4 bg-body p-4">
         <div class="tableData overflow-auto">
-        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#clearAll">Clear All</button>
+        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#clearAll">Clear All</button>
+        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exportCsv">Export</button>
         <br><br>
           <?php
           $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
@@ -128,6 +129,25 @@ if(isset($_GET['page']))
                             </div>
                           </div>
                         </div>
+                      
+                      
+                  <!-- Modal Export-->
+                  <div class="modal fade" id="exportCsv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Export all Data?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <form action="functions.php" method="POST" enctype="multipart/form-data">
+                          <div class="modal-body text-center">
+                          <button type="button" style="width: 150px" class="btn btn-secondary" data-bs-dismiss="modal">Not now</button>
+                          <button type="submit" style="width: 150px" id="submit" name="Export" class="btn btn-success button-loading">Yes</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
 
                   </tr>
                 <?php $i++;

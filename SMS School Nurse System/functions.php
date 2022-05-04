@@ -290,14 +290,14 @@ function filterData(&$str){
  
 $fileName = "sms_school_nurse_system_data_" . date('Y-m-d') . ".xls"; 
  
-$fields = array('ID', 'STUDENT ID', 'FIRST NAME', 'MIDDLE NAME', 'LAST NAME', 'BIRTHDAY', 'SEX', 'AGE', 'CONTACT NO', 'EMAIL', 'YEAR & SECTION', 'COURSE'); 
+$fields = array('ID', 'STUDENT ID', 'FIRST NAME', 'MIDDLE NAME', 'LAST NAME', 'BIRTHDAY', 'SEX', 'AGE', 'CONTACT NO', 'EMAIL', 'YEAR & SECTION', 'COURSE', 'DATE', 'RE-SCHED', 'TIME', 'DESCRIPTION', 'STATUS'); 
  
 $excelData = implode("\t", array_values($fields)) . "\n"; 
  
-$query = $conn->query("SELECT * FROM imported ORDER BY id ASC"); 
+$query = $conn->query("SELECT * FROM patient ORDER BY id ASC"); 
 if($query->num_rows > 0){ 
     while($row = $query->fetch_assoc()){ 
-        $lineData = array($row['id'], $row['studentId'], $row['firstName'], $row['middleName'], $row['lastName'], $row['birthday'], $row['sex'], $row['age'], $row['contact_no'], $row['email'], $row['yr_section'], $row['course']); 
+        $lineData = array($row['id'], $row['studentId'], $row['firstName'], $row['middleName'], $row['lastName'], $row['birthday'], $row['sex'], $row['age'], $row['contact_no'], $row['email'], $row['section'], $row['course'], $row['date'], $row['resched'], $row['time'], $row['description'], $row['status']); 
         array_walk($lineData, 'filterData'); 
         $excelData .= implode("\t", array_values($lineData)) . "\n"; 
     } 

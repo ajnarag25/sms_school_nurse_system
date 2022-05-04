@@ -78,7 +78,6 @@
         </div>
         <div class="col-md-2">
           <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importCsv">Import</button>
-          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exportCsv">Export</button>
         </div>
 
          <!-- Modal Import-->
@@ -96,24 +95,6 @@
                 </div>
                 <div class="modal-footer">
                 <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
-                </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Export-->
-         <div class="modal fade" id="exportCsv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Export all Data?</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="functions.php" method="POST" enctype="multipart/form-data">
-                <div class="modal-body text-center">
-                <button type="button" style="width: 150px" class="btn btn-secondary" data-bs-dismiss="modal">Not now</button>
-                <button type="submit" style="width: 150px" id="submit" name="Export" class="btn btn-success button-loading">Yes</button>
                 </div>
                 </form>
               </div>
