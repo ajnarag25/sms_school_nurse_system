@@ -30,6 +30,12 @@ if(isset($_GET['page']))
   <title>Nurse Clinic | Schedules</title>
 </head>
 
+<style>
+  .no-result-div {
+  display: none;
+}
+</style>
+
 <body id="body-pd" style="background-color: #eef7fe;">
   <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
@@ -63,6 +69,12 @@ if(isset($_GET['page']))
         <div class="tableData overflow-auto">
         <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#clearAll">Clear All</button>
         <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exportCsv">Export</button>
+        <button class="btn btn-secondary" onclick="window.print()"><i class='bx bxs-printer' ></i> Print</button>
+        <br><br>
+        <div class="input-group w-50" >
+              <input type="search" class="form-control rounded"  placeholder="Search" onkeyup="searchUsers()" id="searchUsers" />
+              <button type="submit" class="btn btn-outline-primary"><i class='bx bx-search nav_icon'></i></button>
+        </div>  
         <br><br>
           <?php
           $query = "SELECT * from patient ORDER BY time DESC limit $start_from,$num_per_page";
@@ -70,7 +82,7 @@ if(isset($_GET['page']))
           $count = mysqli_num_rows($result);
           $i = 1;
           if ($count > 0) { ?>
-            <table class="table table-hover">
+            <table class="table table-hover" id="myTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -154,6 +166,12 @@ if(isset($_GET['page']))
                 }; ?>
               </tbody>
             </table>
+            <div class="no-result-div mt-4 text-center" id="no-search">
+              <div class="div">
+                <img src="images/search.svg" width="150" height="150" alt="">
+                <h4 class="mt-3">Search not found...</h4>
+              </div>
+            </div>
           <?php  } else { ?>
             <center>
               <h5 class="mt-5">No schedule data.</h5>
@@ -219,7 +237,9 @@ if(isset($_GET['page']))
     </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
 </body>
 
 </html>
