@@ -34,6 +34,14 @@ if(isset($_GET['page']))
   .no-result-div {
   display: none;
 }
+  @media print{
+    body *{
+      visibility: hidden;
+    }
+    .print-container, .print-container *{
+      visibility: visible;
+    }
+  }
 </style>
 
 <body id="body-pd" style="background-color: #eef7fe;">
@@ -82,7 +90,7 @@ if(isset($_GET['page']))
           $count = mysqli_num_rows($result);
           $i = 1;
           if ($count > 0) { ?>
-            <table class="table table-hover" id="myTable">
+            <table class="table table-hover print-container " id="myTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
